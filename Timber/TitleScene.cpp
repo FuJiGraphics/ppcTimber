@@ -53,7 +53,7 @@ void TitleScene::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Dev1);
+		SCENE_MGR.ChangeScene(SceneIds::GameMenu);
 	}
 
 }
