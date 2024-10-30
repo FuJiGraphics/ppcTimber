@@ -8,51 +8,21 @@ Player::Player(const std::string& name) : GameObject(name)
 	sortingOrder = 0;
 }
 
-void Player::SetSide(Sides s)
-{
-	side = s;
-
-	if (side == Sides::Left)
-	{
-		SetScale({ -1.f, 1.f });
-	}
-	else if (side == Sides::Right)
-	{
-		SetScale({ 1.f, 1.f });
-	}
-
-	sf::Vector2f newPos = position + localPosPlayer[(int)s];
-	spritePlayer.setPosition(newPos);
-	spriteAxe.setPosition(newPos + localPosAxe);
-	spriteRip.setPosition(newPos + localRipAxe);
-}
 
 void Player::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
-	SetSide(side);
 }
 
 void Player::OnDie()
 {
 	isAlive = false;
 	isChppoing = false;
-
-
 }
 
 void Player::SetScale(const sf::Vector2f& scale)
 {
 	this->scale = scale;
-	spritePlayer.setScale(this->scale);
-
-	sf::Vector2f axeScale = this->scale;
-	axeScale.x *= -1.f;
-	spriteAxe.setScale(axeScale);
-
-	sf::Vector2f axeRip = this->scale;
-	axeRip.x = abs(axeScale.x);
-	spriteRip.setScale(axeRip);
 }
 
 void Player::SetOrigin(Origins preset)
@@ -60,7 +30,7 @@ void Player::SetOrigin(Origins preset)
 	originPreset = preset;
 	if (preset != Origins::Custom)
 	{
-		origin = Utils::SetOrigin(spritePlayer, preset);
+		origin = Utils::SetOrigin(spriteIdle, preset);
 	}
 }
 
@@ -68,34 +38,80 @@ void Player::SetOrigin(const sf::Vector2f& newOrigin)
 {
 	originPreset = Origins::Custom;
 	origin = newOrigin;
-	spritePlayer.setOrigin(origin);
+	spriteIdle.setOrigin(origin);
 }
 
 void Player::Init()
 {
-	spritePlayer.setTexture(TEXTURE_MGR.Get(texIdPlayer));
-	SetOrigin(Origins::BC);
+	isAlive = true;
+	spriteIdle.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	spriteAttack.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	spriteFinishMove.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	spriteTransform.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	spriteDie.setTexture(TEXTURE_MGR.Get("graphics/rip.png"));
 
-	spriteAxe.setTexture(TEXTURE_MGR.Get(texIdAxe));
-	spriteAxe.setOrigin(originAxe);
+	// Idle
+	animIdle.SetSprite(spriteIdle);
+	for (int i = 0; i < 6; ++i)
+	{
+		int x = (i * 116) + 11;
+		animIdle.AddFrame({ sf::IntRect{x, 140, 112, 82}, 0.1f });
+	}
+	animIdle.AddFrame({ sf::IntRect{116 * 5 + 11, 140, 112, 82}, 0.5f });
+	for (int i = 5; i >= 0; --i)
+	{
+		int x = (i * 116) + 11;
+		animIdle.AddFrame({ sf::IntRect{x, 140, 112, 82}, 0.1f });
+	}
+	animIdle.AddFrame({ sf::IntRect{11, 140, 112, 82}, 0.5f });
 
-	spriteRip.setTexture(TEXTURE_MGR.Get(texIdRip));
-	Utils::SetOrigin(spriteRip, Origins::BC);
+	// Attack
+	animAttack.SetSprite(spriteAttack);
+	//for (int i = 0; i < 11; ++i)
+	//{
+	//	int x = (i * 116) + 11;
+	//	animAttack.AddFrame({ sf::IntRect{x, 759, 112, 82}, 0.02f });
+	//}
+	for (int i = 0; i < 6; ++i)
+	{
+		int x = (i * 116) + 11;
+		animAttack.AddFrame({ sf::IntRect{x, 1090, 112, 82}, 0.02f });
+	}
+	animAttack.Repeat = false;
+	animAttack.SetEnd(true);
+
+	// Finish Move
+	animFinishMove.SetSprite(spriteFinishMove);
+	for (int i = 0; i < 6; ++i)
+	{
+		int x = (i * 116) + 11;
+		animFinishMove.AddFrame({ sf::IntRect{x, 1198, 112, 82}, 0.1f });
+	}
+	animFinishMove.Repeat = false;
+	animFinishMove.SetEnd(true);
+
+	// Transform
+	animTransform.SetSprite(spriteTransform);
+	for (int i = 0; i < 11; ++i)
+	{
+		int x = (i * 116) + 11;
+		animFinishMove.AddFrame({ sf::IntRect{x, 758, 112, 82}, 0.1f });
+	}
+
 }
 
 void Player::Reset()
 {
 	sfxChop.setBuffer(SOUNDBUFFER_MGR.Get(sbIdChop));
-
-	spritePlayer.setTexture(TEXTURE_MGR.Get(texIdPlayer));
-	spriteAxe.setTexture(TEXTURE_MGR.Get(texIdAxe));
-	spriteRip.setTexture(TEXTURE_MGR.Get(texIdRip));
-
+	spriteIdle.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	spriteAttack.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	spriteFinishMove.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	spriteTransform.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	spriteDie.setTexture(TEXTURE_MGR.Get("graphics/rip.png"));
 	isAlive = true;
 	isChppoing = false;
 	SetPosition(position);
-	SetScale({ 1.f, 1.f });
-	SetSide(Sides::Right);
+	SetScale(scale);
 }
 
 
@@ -109,11 +125,17 @@ void Player::Update(float dt)
 	if (!isAlive)
 		return;
 
+	animIdle.Update(dt);
+	animAttack.Update(dt);
+	animFinishMove.Update(dt);
+	animTransform.Update(dt);
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::Left))
 	{
 		isChppoing = true;
-		SetSide(Sides::Left);
-		sceneGame->OnChop(Sides::Left);
+		side = Sides::Left;
+		sceneGame->OnChop(side);
+		animAttack.Reset();
 		sfxChop.play();
 	}
 
@@ -125,9 +147,10 @@ void Player::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Right))
 	{
 		isChppoing = true;
-		SetSide(Sides::Right);
-		sceneGame->OnChop(Sides::Right);
-		sceneGame->OnChop(Sides::Left);
+		side = Sides::Right;
+		sceneGame->OnChop(side);
+		animAttack.Reset();
+		sfxChop.play();
 	}
 
 	if (InputMgr::GetKeyUp(sf::Keyboard::Right))
@@ -138,17 +161,63 @@ void Player::Update(float dt)
 
 void Player::Draw(sf::RenderWindow& window)
 {
-	if (isAlive)
+	sf::Vector2f newScale = scale;
+	if (side == Sides::Right)
 	{
-		window.draw(spritePlayer);
-		if (isChppoing)
+		sf::Vector2f newPos = position;
+		newPos.x += 500.0f;
+		newScale.x *= -1.0f;
+		if (!isAlive)
 		{
-			window.draw(spriteAxe);
+			newScale.x = 1.0f;
+			newScale.y = 1.0f;
+			newPos.x -= 260.0f;
+			newPos.y += 150.0f;
+			spriteDie.setPosition(newPos);
+			spriteDie.setScale(newScale);
+			window.draw(spriteDie);
+			return;
+		}
+		else if (animAttack.IsEnd())
+		{
+			animIdle.GetSprite()->setPosition(newPos);
+			animIdle.GetSprite()->setScale(newScale);
+			window.draw(*animIdle.GetSprite());
+		}
+		else
+		{
+			animAttack.GetSprite()->setPosition(newPos);
+			animAttack.GetSprite()->setScale(newScale);
+			window.draw(*animAttack.GetSprite());
 		}
 	}
-	else
+	else if (side == Sides::Left)
 	{
-		window.draw(spriteRip);
+		sf::Vector2f newPosRev = position;
+		newPosRev.x -= 500.0f;
+		if (!isAlive)
+		{
+			newScale.x = -1.0f;
+			newScale.y = 1.0f;
+			newPosRev.x += 260.0f;
+			newPosRev.y += 150.0f;
+			spriteDie.setPosition(newPosRev);
+			spriteDie.setScale(newScale);
+			window.draw(spriteDie);
+			return;
+		}
+		else if (animAttack.IsEnd())
+		{
+			animIdle.GetSprite()->setPosition(newPosRev);
+			animIdle.GetSprite()->setScale(newScale);
+			window.draw(*animIdle.GetSprite());
+		}
+		else
+		{
+			animAttack.GetSprite()->setPosition(newPosRev);
+			animAttack.GetSprite()->setScale(newScale);
+			window.draw(*animAttack.GetSprite());
+		}
 	}
 }
 

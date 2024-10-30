@@ -31,7 +31,7 @@ void SceneDev1::Init()
 
 	TEXTURE_MGR.Load("graphics/tree.png");
 	TEXTURE_MGR.Load("graphics/branch.png");
-	TEXTURE_MGR.Load("graphics/player.png");
+	TEXTURE_MGR.Load("graphics/player2.png");
 	TEXTURE_MGR.Load("graphics/rip.png");
 	TEXTURE_MGR.Load("graphics/axe.png");
 
@@ -48,7 +48,9 @@ void SceneDev1::Init()
 	Scene::Init();
 
 	tree->SetPosition({ 1920.f / 2, 1080.f - 200.f });
-	player->SetPosition({ 1920.f / 2, 1080.f - 200.f });
+	player->SetPosition({ 1920.f / 2,  1080.f / 2 });
+	player->SetOrigin(Origins::TL);
+	player->SetScale({ 3.7f, 3.7f });
 
 	centerMsg->text.setCharacterSize(100);
 	centerMsg->text.setFillColor(sf::Color::White);
@@ -70,7 +72,7 @@ void SceneDev1::Enter()
 	TEXTURE_MGR.Load("graphics/tree.png");
 	TEXTURE_MGR.Load("graphics/branch.png");
 	TEXTURE_MGR.Load("graphics/log.png");
-	TEXTURE_MGR.Load("graphics/player.png");
+	TEXTURE_MGR.Load("graphics/player2.png");
 	TEXTURE_MGR.Load("graphics/rip.png");
 	TEXTURE_MGR.Load("graphics/axe.png");
 	FONT_MGR.Load("fonts/KOMIKAP_.ttf");
@@ -102,7 +104,7 @@ void SceneDev1::Exit()
 	TEXTURE_MGR.Unload("graphics/tree.png");
 	TEXTURE_MGR.Unload("graphics/branch.png");
 	TEXTURE_MGR.Unload("graphics/log.png");
-	TEXTURE_MGR.Unload("graphics/player.png");
+	TEXTURE_MGR.Unload("graphics/player2.png");
 	TEXTURE_MGR.Unload("graphics/rip.png");
 	TEXTURE_MGR.Unload("graphics/axe.png");
 	FONT_MGR.Unload("fonts/KOMIKAP_.ttf");
