@@ -105,16 +105,18 @@ void SceneDev2::Enter()
     TEXTURE_MGR.Load("graphics/axe.png");
     FONT_MGR.Load("fonts/KOMIKAP_.ttf");
     SOUNDBUFFER_MGR.Load("sound/chop.wav");
+    SOUNDBUFFER_MGR.Load(sbIdDeath);
+    SOUNDBUFFER_MGR.Load(sbIdTimeOut);
 
+    sfxDeath.setBuffer(SOUNDBUFFER_MGR.Get(sbIdDeath));
+    sfxTimeOut.setBuffer(SOUNDBUFFER_MGR.Get(sbIdTimeOut));
 
+   player1->SetSceneGame2(this);
 
-
-   /* player1->SetSceneGame(this);
-
-    player2->SetSceneGame(this);*/
+    player2->SetSceneGame2(this);
     Scene::Enter();
 
-    //SetStatus(Status::Awake);
+    SetStatus2(Status2::Awake);
 }
 
 void SceneDev2::Exit()
@@ -125,6 +127,7 @@ void SceneDev2::Exit()
     player2->SetSceneGame(nullptr);
     tree1->ClearEffectLog();
     tree2->ClearEffectLog();
+
 
 
     Scene::Exit();
@@ -139,9 +142,37 @@ void SceneDev2::Exit()
     TEXTURE_MGR.Unload("graphics/axe.png");
     FONT_MGR.Unload("fonts/KOMIKAP_.ttf");
     SOUNDBUFFER_MGR.Unload("sound/chop.wav");
+    SOUNDBUFFER_MGR.Unload("sound/death.wav");
+    SOUNDBUFFER_MGR.Unload("sound/out_of_time.wav");
+
 
 }
+void SceneDev2::Update(float dt)
+{
+    Scene::Update(dt);
 
+
+    if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+    {
+        SCENE_MGR.ChangeScene(SceneIds::Dev2);
+    }
+
+    switch (currentStatus)
+    {
+    case SceneDev2::Status2::Awake:
+        UpdateAwake(dt);
+        break;
+    case SceneDev2::Status2::Game:
+        UpdateGame(dt);
+        break;
+    case SceneDev2::Status2::GameOver:
+        UpdateGameOver(dt);
+        break;
+    case SceneDev2::Status2::Pause:
+        UpdatePause(dt);
+        break;
+    }
+}
 void SceneDev2::Draw(sf::RenderWindow& window)
 {
     viewport1->Apply(window);
@@ -166,10 +197,152 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 
 }
 
-void SceneDev2::Update(float dt)
+void SceneDev2::SetCenterMessage(const std::string& msg)
 {
-    Scene::Update(dt);
+    centerMsg1->text.setString(msg);
+    centerMsg1->SetOrigin(Origins::MC);
+    centerMsg2->text.setString(msg);
+    centerMsg2->SetOrigin(Origins::MC);
+}
 
+void SceneDev2::SetVisibleCenterMessage(bool visible)
+{
+    centerMsg1->SetActive(visible);
+    centerMsg2->SetActive(visible);
 
+}
+
+void SceneDev2::SetScore(int score1, int score2)
+{
+
+    this->score1 = score1;
+    this->score2 = score2;
+
+    uiScore1->SetScore(this->score1);
+    uiScore2->SetScore(this->score2);
+}
+
+void SceneDev2::SetStatus2(Status2 newStatus)
+{
+    Status2 prevStatus = currentStatus;
+    currentStatus = newStatus;
+
+    switch (currentStatus)
+    {
+    case SceneDev2::Status2::Awake:
+        FRAMEWORK.SetTimeScale(0.f);
+        SetVisibleCenterMessage(true);
+        SetCenterMessage("Press Enter To Start!!");
+
+        ResetGame(); // 게임 초기화
+
+        break;
+    case SceneDev2::Status2::Game:
+        if (prevStatus == Status2::GameOver)
+        {
+            ResetGame(); // 게임 초기화 (게임 오버 이후에 다시 시작할 때)
+        }
+        FRAMEWORK.SetTimeScale(1.f);
+        SetVisibleCenterMessage(false);
+        break;
+    case SceneDev2::Status2::GameOver:
+        FRAMEWORK.SetTimeScale(0.f);
+        SetVisibleCenterMessage(true);
+        break;
+    case SceneDev2::Status2::Pause:
+        FRAMEWORK.SetTimeScale(0.f);
+        SetVisibleCenterMessage(true);
+        SetCenterMessage("PAUSE! ESC TO RESUME!");
+        break;
+    }
+}
+void SceneDev2::ResetGame()
+{
+    // 게임 초기화 로직
+    score1 = 0;
+    score2 = 0;
+    timer1 = gameTime1;
+    timer2 = gameTime2;
+
+    player1->Reset(); // 플레이어 리셋
+    player2->Reset();
+    tree1->Reset(); // 나무 리셋
+    tree2->Reset();
+}
+void SceneDev2::UpdateAwake(float dt)
+{
+    if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+    {
+        SetStatus2(Status2::Game);
+    }
+}
+
+void SceneDev2::UpdateGame(float dt)
+{
+    if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+    {
+        SetStatus2(Status2::Pause);
+        return;
+    }
+
+    timer1 = Utils::Clamp(timer1 - dt, 0.f, gameTime1);
+    timer2 = Utils::Clamp(timer2 - dt, 0.f, gameTime2);
+
+    uiTimer1->SetValue(timer1 / gameTime1);
+    uiTimer2->SetValue(timer2 / gameTime2);
+
+    if (timer1 <= 0.f)
+    {
+        sfxTimeOut.play();
+
+        player1->OnDie();
+        SetCenterMessage("Time Over!");
+        SetStatus2(Status2::GameOver);
+        return;
+    }
+    if (timer2 <= 0.f)
+    {
+        sfxTimeOut.play();
+
+        player2->OnDie();
+        SetCenterMessage("Time Over!");
+        SetStatus2(Status2::GameOver);
+        return;
+    }
+}
+
+void SceneDev2::UpdateGameOver(float dt)
+{
+    if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+    {
+        SetStatus2(Status2::Game);
+    }
+}
+
+void SceneDev2::UpdatePause(float dt)
+{
+    if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+    {
+        SetStatus2(Status2::Game);
+    }
+}
+
+void SceneDev2::OnChop(Sides side, Player* player, Tree* tree)
+{
+    Sides branchSide = tree->Chop(side);
+    if (player->GetSide() == branchSide)
+    {
+        sfxDeath.play();
+        player->OnDie();
+        SetCenterMessage("You Die!");
+        SetStatus2(Status2::GameOver);
+    }
+    else
+    {
+        SetScore(score1 + 100,score2 +100);
+        timer1 += 1.f;
+        timer2 += 1.f;
+
+    }
 }
 

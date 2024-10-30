@@ -2,10 +2,10 @@
 #include "Player.h"
 #include "Framework/SceneDev1.h"
 
-Player::Player(const std::string& name) : GameObject(name)
+
+
+Player::Player(const std::string& name, PlayerId id) : GameObject(name), playerId(id)
 {
-	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 0;
 }
 
 void Player::SetSide(Sides s)
@@ -134,6 +134,51 @@ void Player::Update(float dt)
 	{
 		isChppoing = false;
 	}
+	if (!isAlive)
+		return;
+
+	if (this == player1) // 첫 번째 플레이어
+	{
+		if (InputMgr::GetKeyDown(sf::Keyboard::Left))
+		{
+			isChppoing = true;
+			SetSide(Sides::Left);
+			sceneGame2->OnChop(Sides::Left, this, sceneGame2->tree1);
+			sfxChop.play();
+		}
+
+		if (InputMgr::GetKeyDown(sf::Keyboard::Right))
+		{
+			isChppoing = true;
+			SetSide(Sides::Right);
+			sceneGame2->OnChop(Sides::Right, this, sceneGame2->tree1);
+			sfxChop.play();
+		}
+	}
+	else if (this == player2) // 두 번째 플레이어
+	{
+		if (InputMgr::GetKeyDown(sf::Keyboard::A))
+		{
+			isChppoing = true;
+			SetSide(Sides::Left);
+			sceneGame2->OnChop(Sides::Left, this, sceneGame2->tree2);
+			sfxChop.play();
+		}
+
+		if (InputMgr::GetKeyDown(sf::Keyboard::D))
+		{
+			isChppoing = true;
+			SetSide(Sides::Right);
+			sceneGame2->OnChop(Sides::Right, this, sceneGame2->tree2);
+			sfxChop.play();
+		}
+	}
+
+	if (InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right) ||
+		InputMgr::GetKeyUp(sf::Keyboard::A) || InputMgr::GetKeyUp(sf::Keyboard::D))
+	{
+		isChppoing = false;
+	}
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -155,4 +200,9 @@ void Player::Draw(sf::RenderWindow& window)
 void Player::SetSceneGame(SceneDev1* scene)
 {
 	sceneGame = scene;
+}
+
+void Player::SetSceneGame2(SceneDev2* scene)
+{
+	sceneGame2 = scene;
 }
