@@ -28,6 +28,7 @@ protected:
 	UiScore* uiScore;
 	UiTimebar* uiTimer;
 
+
 	int score = 0;
 	float timer = 0.f;
 	float gameTime = 5.f;

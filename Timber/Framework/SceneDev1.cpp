@@ -7,9 +7,11 @@
 #include "TextGo.h"
 #include "UiScore.h"
 #include "UiTimebar.h"
+#include "Viewport.h"
 
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1)
 {
+
 }
 
 void SceneDev1::Init()
@@ -142,6 +144,7 @@ void SceneDev1::Update(float dt)
 void SceneDev1::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
+
 }
 
 void SceneDev1::SetCenterMessage(const std::string& msg)
