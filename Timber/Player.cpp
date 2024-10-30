@@ -28,85 +28,57 @@ void Player::SetScale(const sf::Vector2f& scale)
 void Player::SetOrigin(Origins preset)
 {
 	originPreset = preset;
-	if (preset != Origins::Custom)
-	{
-		origin = Utils::SetOrigin(spriteIdle, preset);
-	}
 }
 
 void Player::SetOrigin(const sf::Vector2f& newOrigin)
 {
 	originPreset = Origins::Custom;
 	origin = newOrigin;
-	spriteIdle.setOrigin(origin);
 }
 
 void Player::Init()
 {
 	isAlive = true;
-	spriteIdle.setTexture(TEXTURE_MGR.Get(texIdPlayer));
-	spriteAttack.setTexture(TEXTURE_MGR.Get(texIdPlayer));
-	spriteFinishMove.setTexture(TEXTURE_MGR.Get(texIdPlayer));
-	spriteTransform.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	animIdle.LoadFromFile(texIdPlayer);
+	animAttack.LoadFromFile(texIdPlayer);
+	animFinishMove.LoadFromFile(texIdPlayer);
+	animTransform.LoadFromFile(texIdPlayer);
+
+	// Die
 	spriteDie.setTexture(TEXTURE_MGR.Get("graphics/rip.png"));
+	spriteDie.setPosition({1920.0f * 0.5f, 600.0f});
 
 	// Idle
-	animIdle.SetSprite(spriteIdle);
-	for (int i = 0; i < 6; ++i)
-	{
-		int x = (i * 116) + 11;
-		animIdle.AddFrame({ sf::IntRect{x, 140, 112, 82}, 0.1f });
-	}
-	animIdle.AddFrame({ sf::IntRect{116 * 5 + 11, 140, 112, 82}, 0.5f });
-	for (int i = 5; i >= 0; --i)
-	{
-		int x = (i * 116) + 11;
-		animIdle.AddFrame({ sf::IntRect{x, 140, 112, 82}, 0.1f });
-	}
-	animIdle.AddFrame({ sf::IntRect{11, 140, 112, 82}, 0.5f });
+	animIdle.SetAnimSequence({ 11, 140, 112, 82 }, 4, { 0.1, 0.1, 0.1, 0.1, 0.1, 0.6 }, 6);
+	animIdle.SetAnimSequenceRev({ 11, 140, 112, 82 }, 4, { 0.1, 0.1, 0.1, 0.1, 0.1, 0.6 }, 6);
+	animIdle.SetScale(3.7f, 3.7f);
+	animIdle.SetPosition({1920.0f * 0.5f + 80.0f, 560.0f});
 
 	// Attack
-	animAttack.SetSprite(spriteAttack);
-	//for (int i = 0; i < 11; ++i)
-	//{
-	//	int x = (i * 116) + 11;
-	//	animAttack.AddFrame({ sf::IntRect{x, 759, 112, 82}, 0.02f });
-	//}
-	for (int i = 0; i < 6; ++i)
-	{
-		int x = (i * 116) + 11;
-		animAttack.AddFrame({ sf::IntRect{x, 1090, 112, 82}, 0.02f });
-	}
+	animAttack.SetAnimSequence({ 11, 1090, 112, 82 }, 4, 0.02, 7);
+	animAttack.SetScale(3.7f, 3.7f);
+	animAttack.SetPosition({ 1920.0f * 0.5f + 80.0f, 560.0f });
 	animAttack.Repeat = false;
-	animAttack.SetEnd(true);
 
 	// Finish Move
-	animFinishMove.SetSprite(spriteFinishMove);
-	for (int i = 0; i < 6; ++i)
-	{
-		int x = (i * 116) + 11;
-		animFinishMove.AddFrame({ sf::IntRect{x, 1198, 112, 82}, 0.1f });
-	}
+	animFinishMove.SetAnimSequence({ 11, 1198, 112, 82 }, 4, 0.1, 7);
+	animFinishMove.SetScale(3.7f, 3.7f);
+	animFinishMove.SetPosition({ 1920.0f * 0.5f + 80.0f, 560.0f });
 	animFinishMove.Repeat = false;
-	animFinishMove.SetEnd(true);
 
 	// Transform
-	animTransform.SetSprite(spriteTransform);
-	for (int i = 0; i < 11; ++i)
-	{
-		int x = (i * 116) + 11;
-		animFinishMove.AddFrame({ sf::IntRect{x, 758, 112, 82}, 0.1f });
-	}
-
+	animTransform.SetAnimSequence({11, 758, 112, 82}, 4, 0.1, 11);
+	animTransform.SetScale(3.7f, 3.7f);
+	animTransform.SetPosition({ 1920.0f * 0.5f + 80.0f, 560.0f });
 }
 
 void Player::Reset()
 {
 	sfxChop.setBuffer(SOUNDBUFFER_MGR.Get(sbIdChop));
-	spriteIdle.setTexture(TEXTURE_MGR.Get(texIdPlayer));
-	spriteAttack.setTexture(TEXTURE_MGR.Get(texIdPlayer));
-	spriteFinishMove.setTexture(TEXTURE_MGR.Get(texIdPlayer));
-	spriteTransform.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	animIdle.Reset();
+	animAttack.Reset();
+	animFinishMove.Reset();
+	animTransform.Reset();
 	spriteDie.setTexture(TEXTURE_MGR.Get("graphics/rip.png"));
 	isAlive = true;
 	isChppoing = false;
@@ -114,11 +86,10 @@ void Player::Reset()
 	SetScale(scale);
 }
 
-
 void Player::Release()
 {
-}
 
+}
 
 void Player::Update(float dt)
 {
@@ -161,62 +132,44 @@ void Player::Update(float dt)
 
 void Player::Draw(sf::RenderWindow& window)
 {
-	sf::Vector2f newScale = scale;
 	if (side == Sides::Right)
 	{
-		sf::Vector2f newPos = position;
-		newPos.x += 500.0f;
-		newScale.x *= -1.0f;
 		if (!isAlive)
 		{
-			newScale.x = 1.0f;
-			newScale.y = 1.0f;
-			newPos.x -= 260.0f;
-			newPos.y += 150.0f;
-			spriteDie.setPosition(newPos);
-			spriteDie.setScale(newScale);
 			window.draw(spriteDie);
 			return;
 		}
-		else if (animAttack.IsEnd())
+		else if (animAttack.IsFrameEnd())
 		{
-			animIdle.GetSprite()->setPosition(newPos);
-			animIdle.GetSprite()->setScale(newScale);
-			window.draw(*animIdle.GetSprite());
+			animIdle.SetPosition({ 1920.0f * 0.5f + 480.0f, 560.0f });
+			animIdle.SetFlipX(true);
+			animIdle.Draw(window);
 		}
 		else
 		{
-			animAttack.GetSprite()->setPosition(newPos);
-			animAttack.GetSprite()->setScale(newScale);
-			window.draw(*animAttack.GetSprite());
+			animAttack.SetPosition({ 1920.0f * 0.5f + 480.0f, 560.0f });
+			animAttack.SetFlipX(true);
+			animAttack.Draw(window);
 		}
 	}
 	else if (side == Sides::Left)
 	{
-		sf::Vector2f newPosRev = position;
-		newPosRev.x -= 500.0f;
 		if (!isAlive)
 		{
-			newScale.x = -1.0f;
-			newScale.y = 1.0f;
-			newPosRev.x += 260.0f;
-			newPosRev.y += 150.0f;
-			spriteDie.setPosition(newPosRev);
-			spriteDie.setScale(newScale);
 			window.draw(spriteDie);
 			return;
 		}
-		else if (animAttack.IsEnd())
+		else if (animAttack.IsFrameEnd())
 		{
-			animIdle.GetSprite()->setPosition(newPosRev);
-			animIdle.GetSprite()->setScale(newScale);
-			window.draw(*animIdle.GetSprite());
+			animIdle.SetPosition({ 1920.0f * 0.5f - 480.0f, 560.0f });
+			animIdle.SetFlipX(false);
+			animIdle.Draw(window);
 		}
 		else
 		{
-			animAttack.GetSprite()->setPosition(newPosRev);
-			animAttack.GetSprite()->setScale(newScale);
-			window.draw(*animAttack.GetSprite());
+			animAttack.SetPosition({ 1920.0f * 0.5f - 480.0f, 560.0f });
+			animAttack.SetFlipX(false);
+			animAttack.Draw(window);
 		}
 	}
 }

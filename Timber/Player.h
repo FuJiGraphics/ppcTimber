@@ -12,10 +12,6 @@ protected:
 	fz::Anim animAttack;
 	fz::Anim animFinishMove;
 	fz::Anim animTransform;
-	sf::Sprite spriteIdle;
-	sf::Sprite spriteAttack;
-	sf::Sprite spriteFinishMove;
-	sf::Sprite spriteTransform;
 	
 	sf::Sprite spriteDie;
 	std::string sbIdChop = "sound/chop.wav";

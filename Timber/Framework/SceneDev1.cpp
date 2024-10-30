@@ -48,9 +48,6 @@ void SceneDev1::Init()
 	Scene::Init();
 
 	tree->SetPosition({ 1920.f / 2, 1080.f - 200.f });
-	player->SetPosition({ 1920.f / 2,  1080.f / 2 });
-	player->SetOrigin(Origins::TL);
-	player->SetScale({ 3.7f, 3.7f });
 
 	centerMsg->text.setCharacterSize(100);
 	centerMsg->text.setFillColor(sf::Color::White);
