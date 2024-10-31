@@ -196,6 +196,10 @@ void SceneDev1::SetStatus(Status newStatus)
 		break;
 	case SceneDev1::Status::GameOver:
 		FRAMEWORK.SetTimeScale(0.f);
+		for (auto bee : bees)
+			RemoveGo(bee);
+		bees.clear();
+		beeHive->SetActive(false);
 		SetVisibleCenterMessage(true);
 		break;
 	case SceneDev1::Status::Pause:
@@ -245,7 +249,7 @@ void SceneDev1::UpdateGame(float dt)
 				BeeGo* newBee = AddGo(new BeeGo("graphics/Bee_Walk.png"));
 				bees.push_back(newBee);
 				const auto& hivePos = beeHive->GetPosition();
-				newBee->SetPosition({ hivePos.x, hivePos.y - 100.f });
+				newBee->SetPosition({ hivePos.x - 50.f, hivePos.y - 100.f });
 				newBee->SetScale({ 4.0f, 4.0f });
 				newBee->SetSpeed(Utils::RandomRange(100.f, 400.f));
 				newBee->Reset();
