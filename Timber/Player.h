@@ -14,7 +14,7 @@ protected:
 	sf::Sprite spriteRip;
 
 	std::string sbIdChop = "sound/chop.wav";
-	std::string texIdPlayer = "graphics/player.png";
+	std::string texIdPlayer;
 	std::string texIdAxe = "graphics/axe.png";
 	std::string texIdRip = "graphics/rip.png";
 
@@ -38,6 +38,9 @@ public:
 	Sides GetSide() const { return side; }
 	void SetSide(Sides s);
 	void OnDie();
+
+	void SetPalyerTexturId(const std::string& id);
+	std::string GetPlayerTexturId() { return texIdPlayer; }
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetScale(const sf::Vector2f& scale) override;

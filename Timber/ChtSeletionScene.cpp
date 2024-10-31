@@ -57,11 +57,19 @@ void ChtSeletionScene::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
 	{
 		GameMgr::SetUsers(play1,play2);
+		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Dev2);
+		}
 		
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
 	{
 		GameMgr::SetUsers(play2,play1);
+		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Dev2);
+		}
 	}
 }
 

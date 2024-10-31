@@ -44,6 +44,8 @@ void SceneDev1::Init()
 
 	uiScore = AddGo(new UiScore("fonts/KOMIKAP_.ttf", "Ui Score"));
 	uiTimer = AddGo(new UiTimebar("Ui Timer"));
+	player->SetPalyerTexturId("graphics/player.png");
+	
 
 	Scene::Init();
 
@@ -116,6 +118,12 @@ void SceneDev1::Update(float dt)
 { 
 	Scene::Update(dt);
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::R))
+	{
+		
+		player->SetPalyerTexturId("graphics/player2.png");
+		player->Init();
+	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{

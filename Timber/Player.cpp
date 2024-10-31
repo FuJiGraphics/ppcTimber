@@ -27,6 +27,11 @@ void Player::SetSide(Sides s)
 	spriteRip.setPosition(newPos + localRipAxe);
 }
 
+void Player::SetPalyerTexturId(const std::string& id)
+{
+	this->texIdPlayer = id;
+}
+
 void Player::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
@@ -73,6 +78,8 @@ void Player::SetOrigin(const sf::Vector2f& newOrigin)
 
 void Player::Init()
 {
+
+
 	spritePlayer.setTexture(TEXTURE_MGR.Get(texIdPlayer));
 	SetOrigin(Origins::BC);
 
