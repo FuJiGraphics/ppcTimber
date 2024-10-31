@@ -1,14 +1,12 @@
 #include "stdafx.h"
-#include "ChtSeletionScene.h"
-#include "Player.h"
-#include "Player2.h"
+#include "SoloSltScene.h"
 #include "GameMgr.h"
-
-ChtSeletionScene::ChtSeletionScene() : Scene(SceneIds::ChtSeletion)
+#include "Player.h"
+SoloSltScene::SoloSltScene() : Scene(SceneIds::SoloSeletion)
 {
 }
 
-void ChtSeletionScene::Init()
+void SoloSltScene::Init()
 {
 	GameObject* obj = AddGo(new SpriteGo("graphics/background.png"));
 	obj->sortingLayer = SortingLayers::Background;
@@ -22,16 +20,17 @@ void ChtSeletionScene::Init()
 
 	Cht1->sortingLayer = SortingLayers::Foreground;
 	Cht1->SetOrigin(Origins::MR);
-	Cht1->SetPosition({ 1920 / 2-300, 1080 / 2 });
-	
+	Cht1->SetPosition({ 1920 / 2 - 300, 1080 / 2 });
+
 	Cht2->sortingLayer = SortingLayers::Foreground;
 	Cht2->SetOrigin(Origins::ML);
-	Cht2->SetPosition({ 1920 / 2+300, 1080 / 2 });
+	Cht2->SetPosition({ 1920 / 2 + 300, 1080 / 2 });
 
 	Scene::Init();
+
 }
 
-void ChtSeletionScene::Enter()
+void SoloSltScene::Enter()
 {
 	TEXTURE_MGR.Load("graphics/background.png");
 	TEXTURE_MGR.Load("graphics/player.png");
@@ -40,9 +39,8 @@ void ChtSeletionScene::Enter()
 	Scene::Enter();
 }
 
-void ChtSeletionScene::Exit()
+void SoloSltScene::Exit()
 {
-
 	Scene::Exit();
 	TEXTURE_MGR.Unload("graphics/background.png");
 	TEXTURE_MGR.Unload("graphics/player.png");
@@ -50,22 +48,25 @@ void ChtSeletionScene::Exit()
 	FONT_MGR.Unload("fonts/KOMIKAP_.ttf");
 }
 
-void ChtSeletionScene::Update(float dt)
+void SoloSltScene::Update(float dt)
 {
 	Scene::Update(dt);
 
-	
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
 	{
-	
-		
-		
-		
-	}else if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
-	{
-
+		 p1texId = "graphics/player.png";
+		 GameMgr::playTexId = p1texId;
+		 SCENE_MGR.ChangeScene(SceneIds::Dev1);
 		
 	}
+	else if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
+	{
+		GameMgr::playTexId = "graphics/player2.png";
+		SCENE_MGR.ChangeScene(SceneIds::Dev1);
+	}
+	
+	
+		
+	
 }
-
-

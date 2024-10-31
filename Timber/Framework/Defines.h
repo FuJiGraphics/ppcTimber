@@ -14,6 +14,7 @@ enum class SceneIds
 	Title,
 	GameMenu,
 	ChtSeletion,
+	SoloSeletion,
 	Dev1,
 	Dev2,
 	Count,

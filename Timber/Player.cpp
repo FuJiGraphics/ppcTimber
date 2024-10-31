@@ -80,8 +80,8 @@ void Player::Init()
 {
 
 
-	spritePlayer.setTexture(TEXTURE_MGR.Get(texIdPlayer));
-	SetOrigin(Origins::BC);
+	//spritePlayer.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	//SetOrigin(Origins::BC);
 
 	spriteAxe.setTexture(TEXTURE_MGR.Get(texIdAxe));
 	spriteAxe.setOrigin(originAxe);
@@ -95,6 +95,8 @@ void Player::Reset()
 	sfxChop.setBuffer(SOUNDBUFFER_MGR.Get(sbIdChop));
 
 	spritePlayer.setTexture(TEXTURE_MGR.Get(texIdPlayer));
+	SetOrigin(Origins::BC);
+
 	spriteAxe.setTexture(TEXTURE_MGR.Get(texIdAxe));
 	spriteRip.setTexture(TEXTURE_MGR.Get(texIdRip));
 

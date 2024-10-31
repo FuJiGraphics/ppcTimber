@@ -1,21 +1,21 @@
 #pragma once
 #include "Framework/Scene.h"
 class GameObject;
+class TextGo;
 class Player;
-class Player2;
-class ChtSeletionScene : public Scene
+class SoloSltScene : public Scene
 {
 protected:
 	GameObject* Cht1;
 	GameObject* Cht2;
 
 	TextGo* selet1;
-	TextGo* selet2;
+	std::string p1texId;
 
 
 public:
-	ChtSeletionScene();
-	virtual ~ChtSeletionScene() = default;
+	SoloSltScene();
+	virtual ~SoloSltScene() = default;
 
 	void Init() override;
 	void Enter() override;
@@ -23,8 +23,5 @@ public:
 
 
 	void Update(float dt) override;
-
-
-
 };
 

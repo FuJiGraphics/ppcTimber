@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneDev1.h"
 #include "SpriteGo.h"
+#include "GameMgr.h"
 #include "CloudGo.h"
 #include "Tree.h"
 #include "Player.h"
@@ -32,6 +33,7 @@ void SceneDev1::Init()
 	TEXTURE_MGR.Load("graphics/tree.png");
 	TEXTURE_MGR.Load("graphics/branch.png");
 	TEXTURE_MGR.Load("graphics/player.png");
+	TEXTURE_MGR.Load("graphics/player2.png");
 	TEXTURE_MGR.Load("graphics/rip.png");
 	TEXTURE_MGR.Load("graphics/axe.png");
 
@@ -39,18 +41,19 @@ void SceneDev1::Init()
 	player = AddGo(new Player("Player"));
 
 
+
 	centerMsg = AddGo(new TextGo("fonts/KOMIKAP_.ttf", "Center Message"));
 	centerMsg->sortingLayer = SortingLayers::UI;
 
 	uiScore = AddGo(new UiScore("fonts/KOMIKAP_.ttf", "Ui Score"));
 	uiTimer = AddGo(new UiTimebar("Ui Timer"));
-	player->SetPalyerTexturId("graphics/player.png");
 	
 
 	Scene::Init();
 
 	tree->SetPosition({ 1920.f / 2, 1080.f - 200.f });
 	player->SetPosition({ 1920.f / 2, 1080.f - 200.f });
+	
 
 	centerMsg->text.setCharacterSize(100);
 	centerMsg->text.setFillColor(sf::Color::White);
@@ -73,6 +76,7 @@ void SceneDev1::Enter()
 	TEXTURE_MGR.Load("graphics/branch.png");
 	TEXTURE_MGR.Load("graphics/log.png");
 	TEXTURE_MGR.Load("graphics/player.png");
+	TEXTURE_MGR.Load("graphics/player2.png");
 	TEXTURE_MGR.Load("graphics/rip.png");
 	TEXTURE_MGR.Load("graphics/axe.png");
 	FONT_MGR.Load("fonts/KOMIKAP_.ttf");
@@ -84,7 +88,7 @@ void SceneDev1::Enter()
 	sfxTimeOut.setBuffer(SOUNDBUFFER_MGR.Get(sbIdTimeOut));
 
 	player->SetSceneGame(this);
-
+	player->SetPalyerTexturId(GameMgr::playTexId);
 	Scene::Enter();
 
 	SetStatus(Status::Awake);
@@ -105,6 +109,7 @@ void SceneDev1::Exit()
 	TEXTURE_MGR.Unload("graphics/branch.png");
 	TEXTURE_MGR.Unload("graphics/log.png");
 	TEXTURE_MGR.Unload("graphics/player.png");
+	TEXTURE_MGR.Unload("graphics/player2.png");
 	TEXTURE_MGR.Unload("graphics/rip.png");
 	TEXTURE_MGR.Unload("graphics/axe.png");
 	FONT_MGR.Unload("fonts/KOMIKAP_.ttf");
@@ -118,12 +123,6 @@ void SceneDev1::Update(float dt)
 { 
 	Scene::Update(dt);
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::R))
-	{
-		
-		player->SetPalyerTexturId("graphics/player2.png");
-		player->Init();
-	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
