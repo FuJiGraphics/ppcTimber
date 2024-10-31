@@ -36,3 +36,10 @@ enum class Sides
 	Right,
 	None,
 };
+
+enum class Charetor
+{
+	None,
+	ch1,
+	ch2,
+};

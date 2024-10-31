@@ -8,6 +8,7 @@ SoloSltScene::SoloSltScene() : Scene(SceneIds::SoloSeletion)
 
 void SoloSltScene::Init()
 {
+	
 	GameObject* obj = AddGo(new SpriteGo("graphics/background.png"));
 	obj->sortingLayer = SortingLayers::Background;
 	obj->sortingOrder = -1;
@@ -16,7 +17,6 @@ void SoloSltScene::Init()
 
 	Cht1 = AddGo(new SpriteGo("graphics/player.png"));
 	Cht2 = AddGo(new SpriteGo("graphics/player2.png"));
-
 
 	Cht1->sortingLayer = SortingLayers::Foreground;
 	Cht1->SetOrigin(Origins::MR);
@@ -48,15 +48,18 @@ void SoloSltScene::Exit()
 	FONT_MGR.Unload("fonts/KOMIKAP_.ttf");
 }
 
+
+
 void SoloSltScene::Update(float dt)
 {
 	Scene::Update(dt);
 
-
+	
+	
+	
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
 	{
-		 p1texId = "graphics/player.png";
-		 GameMgr::playTexId = p1texId;
+		 GameMgr::playTexId = "graphics/player.png";
 		 SCENE_MGR.ChangeScene(SceneIds::Dev1);
 		
 	}

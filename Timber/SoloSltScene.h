@@ -11,8 +11,9 @@ protected:
 
 	TextGo* selet1;
 	std::string p1texId;
+	
 
-
+	Charetor charetor = Charetor::None; 
 public:
 	SoloSltScene();
 	virtual ~SoloSltScene() = default;
@@ -20,7 +21,6 @@ public:
 	void Init() override;
 	void Enter() override;
 	void Exit() override;
-
 
 	void Update(float dt) override;
 };

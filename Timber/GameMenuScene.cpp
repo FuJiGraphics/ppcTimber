@@ -66,6 +66,6 @@ void GameMenuScene::Update(float dt)
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
 	{
-		SCENE_MGR.ChangeScene(SceneIds::ChtSeletion);
+		SCENE_MGR.ChangeScene(SceneIds::Dev2);
 	}
 }
