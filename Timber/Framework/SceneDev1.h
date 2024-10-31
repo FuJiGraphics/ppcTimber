@@ -6,6 +6,8 @@ class Player;
 class TextGo;
 class UiScore;
 class UiTimebar;
+class BeeHive;
+class BeeGo;
 
 class SceneDev1 : public Scene
 {
@@ -23,6 +25,8 @@ protected:
 
 	Tree* tree;
 	Player* player;
+	BeeHive* beeHive;
+	std::vector<BeeGo*> bees;
 
 	TextGo* centerMsg;
 	UiScore* uiScore;
@@ -31,6 +35,8 @@ protected:
 
 	int score = 0;
 	float timer = 0.f;
+	float beeTimer = 0.f;
+	float beeGenTime = 1.0f;
 	float gameTime = 5.f;
 
 	sf::Sound sfxDeath;
@@ -64,5 +70,6 @@ public:
 
 	void OnChop(Sides side);
 
+	Status GetStatus() const { return currentStatus; }
 };
 

@@ -7,7 +7,12 @@
 #include "TextGo.h"
 #include "UiScore.h"
 #include "UiTimebar.h"
+<<<<<<< HEAD
 #include "Viewport.h"
+=======
+#include "BeeHive.h"
+#include "BeeGo.h"
+>>>>>>> master
 
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1)
 {
@@ -33,24 +38,24 @@ void SceneDev1::Init()
 
 	TEXTURE_MGR.Load("graphics/tree.png");
 	TEXTURE_MGR.Load("graphics/branch.png");
-	TEXTURE_MGR.Load("graphics/player.png");
+	TEXTURE_MGR.Load("graphics/player2.png");
 	TEXTURE_MGR.Load("graphics/rip.png");
 	TEXTURE_MGR.Load("graphics/axe.png");
 
 	tree = AddGo(new Tree("Tree"));
 	player = AddGo(new Player("Player"));
 
-
 	centerMsg = AddGo(new TextGo("fonts/KOMIKAP_.ttf", "Center Message"));
 	centerMsg->sortingLayer = SortingLayers::UI;
 
 	uiScore = AddGo(new UiScore("fonts/KOMIKAP_.ttf", "Ui Score"));
 	uiTimer = AddGo(new UiTimebar("Ui Timer"));
+	beeHive = AddGo(new BeeHive("BeeHive"));
+	beeHive->SetActive(false);
 
 	Scene::Init();
 
 	tree->SetPosition({ 1920.f / 2, 1080.f - 200.f });
-	player->SetPosition({ 1920.f / 2, 1080.f - 200.f });
 
 	centerMsg->text.setCharacterSize(100);
 	centerMsg->text.setFillColor(sf::Color::White);
@@ -72,9 +77,12 @@ void SceneDev1::Enter()
 	TEXTURE_MGR.Load("graphics/tree.png");
 	TEXTURE_MGR.Load("graphics/branch.png");
 	TEXTURE_MGR.Load("graphics/log.png");
-	TEXTURE_MGR.Load("graphics/player.png");
+	TEXTURE_MGR.Load("graphics/player2.png");
 	TEXTURE_MGR.Load("graphics/rip.png");
 	TEXTURE_MGR.Load("graphics/axe.png");
+	TEXTURE_MGR.Load("graphics/Stup.png");
+	TEXTURE_MGR.Load("graphics/StupDead.png");
+	TEXTURE_MGR.Load("graphics/Bee_Walk.png");
 	FONT_MGR.Load("fonts/KOMIKAP_.ttf");
 	SOUNDBUFFER_MGR.Load("sound/chop.wav");
 	SOUNDBUFFER_MGR.Load(sbIdDeath);
@@ -104,25 +112,21 @@ void SceneDev1::Exit()
 	TEXTURE_MGR.Unload("graphics/tree.png");
 	TEXTURE_MGR.Unload("graphics/branch.png");
 	TEXTURE_MGR.Unload("graphics/log.png");
-	TEXTURE_MGR.Unload("graphics/player.png");
+	TEXTURE_MGR.Unload("graphics/player2.png");
 	TEXTURE_MGR.Unload("graphics/rip.png");
 	TEXTURE_MGR.Unload("graphics/axe.png");
+	TEXTURE_MGR.Unload("graphics/Stup.png");
+	TEXTURE_MGR.Unload("graphics/StupDead.png");
+	TEXTURE_MGR.Unload("graphics/Bee_Walk.png");
 	FONT_MGR.Unload("fonts/KOMIKAP_.ttf");
 	SOUNDBUFFER_MGR.Unload("sound/chop.wav");
 	SOUNDBUFFER_MGR.Unload("sound/death.wav");
 	SOUNDBUFFER_MGR.Unload("sound/out_of_time.wav");
-
 }
 
 void SceneDev1::Update(float dt)
 { 
 	Scene::Update(dt);
-
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		SCENE_MGR.ChangeScene(SceneIds::Dev2);
-	}
 
 	switch (currentStatus)
 	{
@@ -181,6 +185,7 @@ void SceneDev1::SetStatus(Status newStatus)
 		uiTimer->SetValue(1.f);
 		break;
 	case SceneDev1::Status::Game:
+		
 		if (prevStatus == Status::GameOver)
 		{
 			score = 0;
@@ -197,6 +202,10 @@ void SceneDev1::SetStatus(Status newStatus)
 		break;
 	case SceneDev1::Status::GameOver:
 		FRAMEWORK.SetTimeScale(0.f);
+		for (auto bee : bees)
+			RemoveGo(bee);
+		bees.clear();
+		beeHive->SetActive(false);
 		SetVisibleCenterMessage(true);
 		break;
 	case SceneDev1::Status::Pause:
@@ -233,6 +242,40 @@ void SceneDev1::UpdateGame(float dt)
 		SetCenterMessage("Time Over!");
 		SetStatus(Status::GameOver);
 		return;
+	}
+	// 타이머 종료가 안됐다면
+	else
+	{
+		// 벌집이 터졌는지 확인한다.
+		if (beeHive->IsActive() && beeHive->IsExploded())
+		{
+			beeTimer = Utils::Clamp(beeTimer - dt, 0.f, beeGenTime);
+			if (beeTimer <= 0.f)
+			{
+				BeeGo* newBee = AddGo(new BeeGo("graphics/Bee_Walk.png"));
+				bees.push_back(newBee);
+				const auto& hivePos = beeHive->GetPosition();
+				newBee->SetPosition({ hivePos.x - 50.f, hivePos.y - 100.f });
+				newBee->SetScale({ 4.0f, 4.0f });
+				newBee->SetSpeed(Utils::RandomRange(100.f, 400.f));
+				Sides newDir = (Utils::RandomRange(0, 1) == 1) ? Sides::Left : Sides::Right;
+				newBee->SetDirection(newDir);
+				newBee->Reset();
+				newBee->SetSceneStatus(&currentStatus);
+				beeTimer = beeGenTime;
+			}
+		}
+		else if (!beeHive->IsActive())
+		{
+			if (Utils::RandomRange(0, 2000) == 1)
+			{
+				float dir = Utils::RandomRange(0, 1) ? 400.f : -600.f;
+				beeHive->Reset();
+				beeHive->SetPosition({ 1920 / 2 + dir, 0.0f });
+				beeHive->SetScale({ 2.0f, 2.0f });
+				beeHive->SetActive(true);
+			}
+		}
 	}
 }
 

@@ -32,3 +32,4 @@
 #include "Framework/SpriteGo.h"
 #include "Framework/TextGo.h"
 #include "Framework/Utils.h"
+#include "Framework/Anim.h"

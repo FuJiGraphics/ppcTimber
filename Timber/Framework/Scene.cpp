@@ -22,7 +22,7 @@ void Scene::Release()
 	for (auto obj : gameObjects)
 	{
 		obj->Release();
-		delete obj;
+		// delete obj;
 	}
 	gameObjects.clear();
 }
