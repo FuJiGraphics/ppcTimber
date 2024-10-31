@@ -112,7 +112,7 @@ namespace fz {
         return m_IsEnd;
     }
 
-    void Anim::SetAnimSequence(
+    void Anim::AddAnimSequence(
         const sf::IntRect& rect, 
         int stride, 
         const std::vector<double>& durations, 
@@ -126,7 +126,7 @@ namespace fz {
         }
     }
 
-    void Anim::SetAnimSequenceRev(
+    void Anim::AddAnimSequenceRev(
         const sf::IntRect& rect, 
         int stride, 
         const std::vector<double>& durations, 
@@ -138,6 +138,30 @@ namespace fz {
             x += i * (width + stride);
             m_Frames.push_back({ {x, y, width, height}, durations[count - (i + 1)]});
         }
+    }
+
+    void Anim::AddAnimSequence(const sf::IntRect& rect, int stride, double duration, int count)
+    {
+        std::vector<double> durations(count, duration);
+        this->AddAnimSequence(rect, stride, durations, count);
+    }
+
+    void Anim::AddAnimSequenceRev(const sf::IntRect& rect, int stride, double duration, int count)
+    {
+        std::vector<double> durations(count, duration);
+        this->AddAnimSequenceRev(rect, stride, durations, count);
+    }
+
+    void Anim::SetAnimSequence(const sf::IntRect& rect, int stride, const std::vector<double>& durations, int count)
+    {
+        this->ClearSequence();
+        this->AddAnimSequence(rect, stride, durations, count);
+    }
+
+    void Anim::SetAnimSequenceRev(const sf::IntRect& rect, int stride, const std::vector<double>& durations, int count)
+    {
+        this->ClearSequence();
+        this->AddAnimSequenceRev(rect, stride, durations, count);
     }
 
     void Anim::SetAnimSequence(const sf::IntRect& rect, int stride, double duration, int count)
@@ -192,6 +216,13 @@ namespace fz {
         newScale.y = m_Scale[1] * ((m_Flips[1]) ? -1.0f : 1.0f);
         m_Sprite->setScale({ newScale.x, newScale.y });
         window.draw(*m_Sprite);
+    }
+
+    void Anim::ClearSequence()
+    {
+        m_Frames.clear();
+        m_TotalLength = 0.0;
+        m_TotalProgress = 0.0;
     }
 
 } // namespace fz

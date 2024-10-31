@@ -35,6 +35,11 @@ namespace fz {
         bool IsFlipY() const;
         bool IsFrameEnd() const;
 
+        void AddAnimSequence(const sf::IntRect& rect, int stride, const std::vector<double>& durations, int count);
+        void AddAnimSequenceRev(const sf::IntRect& rect, int stride, const std::vector<double>& durations, int count);
+        void AddAnimSequence(const sf::IntRect& rect, int stride, double duration, int count);
+        void AddAnimSequenceRev(const sf::IntRect& rect, int stride, double duration, int count);
+
         void SetAnimSequence(const sf::IntRect& rect, int stride, const std::vector<double>& durations, int count);
         void SetAnimSequenceRev(const sf::IntRect& rect, int stride, const std::vector<double>& durations, int count);
         void SetAnimSequence(const sf::IntRect& rect, int stride, double duration, int count);
@@ -43,6 +48,7 @@ namespace fz {
         void Update(float dt);
         void Reset();
         void Draw(sf::RenderWindow& window);
+        void ClearSequence();
 
     private:
         std::string                     m_Name;
