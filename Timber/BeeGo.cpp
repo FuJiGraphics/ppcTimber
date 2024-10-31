@@ -34,6 +34,9 @@ void BeeGo::Reset()
 
 void BeeGo::Update(float dt)
 {
+	if (currSceneStatus && (*currSceneStatus != SceneDev1::Status::Game))
+		return;
+
 	animIdleR.Update(dt);
 	animIdleL.Update(dt);
 	elap += dt;
@@ -71,3 +74,9 @@ void BeeGo::SetDirection(Sides side)
 {
 	this->dir = side;
 }
+
+void BeeGo::SetSceneStatus(SceneDev1::Status* status)
+{
+	currSceneStatus = status;
+}
+

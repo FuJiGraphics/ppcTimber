@@ -68,8 +68,9 @@ void Player::Init()
 	animFinishMove.Repeat = false;
 
 	// EnergyBeam
-	animEnergyBeam.SetAnimSequence({ 11, 762, 112, 82 }, 4, 0.2, 11);
-	animEnergyBeam.SetAnimSequence({ 11, 1198, 112, 82 }, 4, { 0.1, 0.1, 0.6, 0.2, 0.2, 2.0, 0.2 }, 7);
+	animEnergyBeam.AddFrame({ {4, 1347, 50, 80}, 0.2 });
+	animEnergyBeam.AddFrame({ {4, 1347, 80, 100}, 0.2 });
+	animEnergyBeam.SetAnimSequence({ 4, 1347, 112, 82 }, 4, 0.2, 11);
 	animEnergyBeam.SetScale(3.7f, 3.7f);
 	animEnergyBeam.SetPosition({ 1920.0f * 0.5f + 80.0f, 560.0f });
 	animEnergyBeam.Repeat = false;

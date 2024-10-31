@@ -69,5 +69,6 @@ public:
 
 	void OnChop(Sides side);
 
+	Status GetStatus() const { return currentStatus; }
 };
 

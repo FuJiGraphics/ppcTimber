@@ -11,6 +11,7 @@ protected:
 	fz::Anim animIdleR;
 	fz::Anim animIdleL;
 
+	SceneDev1::Status* currSceneStatus = nullptr;
 public:
 	BeeGo(const std::string& texId, const std::string& name = "");
 	~BeeGo() = default;
@@ -23,5 +24,7 @@ public:
 
 	void SetSpeed(float speed);
 	void SetDirection(Sides side);
+
+	void SetSceneStatus(SceneDev1::Status* status);
 };
 

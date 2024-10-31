@@ -179,6 +179,7 @@ void SceneDev1::SetStatus(Status newStatus)
 		uiTimer->SetValue(1.f);
 		break;
 	case SceneDev1::Status::Game:
+		
 		if (prevStatus == Status::GameOver)
 		{
 			score = 0;
@@ -243,14 +244,16 @@ void SceneDev1::UpdateGame(float dt)
 			{
 				BeeGo* newBee = AddGo(new BeeGo("graphics/Bee_Walk.png"));
 				bees.push_back(newBee);
-				newBee->SetPosition(beeHive->GetPosition());
+				const auto& hivePos = beeHive->GetPosition();
+				newBee->SetPosition({ hivePos.x, hivePos.y - 100.f });
 				newBee->SetScale({ 4.0f, 4.0f });
 				newBee->SetSpeed(Utils::RandomRange(100.f, 400.f));
 				newBee->Reset();
+				newBee->SetSceneStatus(&currentStatus);
 				beeTimer = beeGenTime;
 			}
 		}
-		else
+		else if (!beeHive->IsActive())
 		{
 			if (Utils::RandomRange(0, 2000) == 1)
 			{
