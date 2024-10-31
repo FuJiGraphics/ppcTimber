@@ -12,6 +12,7 @@ protected:
 	fz::Anim animAttack;
 	fz::Anim animFinishMove;
 	fz::Anim animTransform;
+	fz::Anim animEnergyBeam;
 	
 	sf::Sprite spriteDie;
 	std::string sbIdChop = "sound/chop.wav";
@@ -23,6 +24,7 @@ protected:
 
 	bool isAlive = true;
 	bool isChppoing = false;
+	bool isFinishMove = false;
 
 	SceneDev1* sceneGame = nullptr;
 

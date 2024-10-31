@@ -3,8 +3,6 @@
 
 namespace fz {
 
-    class Camera;
-
     struct Frame 
     {
         sf::IntRect Rect;

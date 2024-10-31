@@ -61,10 +61,18 @@ void Player::Init()
 	animAttack.Repeat = false;
 
 	// Finish Move
-	animFinishMove.SetAnimSequence({ 11, 1198, 112, 82 }, 4, 0.1, 7);
+	animFinishMove.SetAnimSequence({ 11, 762, 112, 82 }, 4, 0.2, 11);
+	animFinishMove.SetAnimSequence({ 11, 1198, 112, 82 }, 4, { 0.1, 0.1, 0.6, 0.2, 0.2, 2.0, 0.2 }, 7);
 	animFinishMove.SetScale(3.7f, 3.7f);
 	animFinishMove.SetPosition({ 1920.0f * 0.5f + 80.0f, 560.0f });
 	animFinishMove.Repeat = false;
+
+	// EnergyBeam
+	animEnergyBeam.SetAnimSequence({ 11, 762, 112, 82 }, 4, 0.2, 11);
+	animEnergyBeam.SetAnimSequence({ 11, 1198, 112, 82 }, 4, { 0.1, 0.1, 0.6, 0.2, 0.2, 2.0, 0.2 }, 7);
+	animEnergyBeam.SetScale(3.7f, 3.7f);
+	animEnergyBeam.SetPosition({ 1920.0f * 0.5f + 80.0f, 560.0f });
+	animEnergyBeam.Repeat = false;
 
 	// Transform
 	animTransform.SetAnimSequence({11, 758, 112, 82}, 4, 0.1, 11);
@@ -101,6 +109,16 @@ void Player::Update(float dt)
 	animFinishMove.Update(dt);
 	animTransform.Update(dt);
 
+	if (InputMgr::GetKeyUp(sf::Keyboard::Space))
+	{
+  		isChppoing = true;
+		isFinishMove = true;
+	}
+	if (InputMgr::GetKeyUp(sf::Keyboard::Space))
+	{
+		isChppoing = false;
+	}
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::Left))
 	{
 		isChppoing = true;
@@ -128,16 +146,31 @@ void Player::Update(float dt)
 	{
 		isChppoing = false;
 	}
+
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
-	if (side == Sides::Right)
+	if (!isAlive)
 	{
-		if (!isAlive)
+		window.draw(spriteDie);
+		return;
+	}
+	else if (side == Sides::Right)
+	{
+		if (isFinishMove)
 		{
-			window.draw(spriteDie);
-			return;
+			if (animFinishMove.IsFrameEnd())
+			{
+				animFinishMove.Reset();
+				isFinishMove = false;
+			}
+			else
+			{
+				animFinishMove.SetPosition({ 1920.0f * 0.5f + 480.0f, 560.0f });
+				animFinishMove.SetFlipX(true);
+				animFinishMove.Draw(window);
+			}
 		}
 		else if (animAttack.IsFrameEnd())
 		{
@@ -154,10 +187,19 @@ void Player::Draw(sf::RenderWindow& window)
 	}
 	else if (side == Sides::Left)
 	{
-		if (!isAlive)
+		if (isFinishMove)
 		{
-			window.draw(spriteDie);
-			return;
+			if (animFinishMove.IsFrameEnd())
+			{
+				animFinishMove.Reset();
+				isFinishMove = false;
+			}
+			else
+			{
+				animFinishMove.SetPosition({ 1920.0f * 0.5f - 480.0f, 560.0f });
+				animFinishMove.SetFlipX(false);
+				animFinishMove.Draw(window);
+			}
 		}
 		else if (animAttack.IsFrameEnd())
 		{
