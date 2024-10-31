@@ -17,7 +17,7 @@ public:
 
 	void Reset() override;
 	void SetPosition(const sf::Vector2f& pos) override;
-	void SetScale(const sf::Vector2f& pos) override;
+	void SetScale(const sf::Vector2f& scale) override;
 	void Draw(sf::RenderWindow& window) override;
 };
 
