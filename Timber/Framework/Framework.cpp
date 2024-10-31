@@ -12,6 +12,7 @@ void Framework::Init(int width, int height, const std::string& name)
 
 void Framework::Do()
 {
+
     while (window.isOpen())
     {
         sf::Time dt = clock.restart();

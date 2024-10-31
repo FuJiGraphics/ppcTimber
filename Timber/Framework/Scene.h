@@ -1,4 +1,5 @@
 #pragma once
+
 class Scene
 {
 protected:
@@ -7,6 +8,7 @@ protected:
 
 	std::list<GameObject*> addGameObjects;
 	std::list<GameObject*> removeGameObjects;
+
 
 public:
 	Scene(SceneIds id);

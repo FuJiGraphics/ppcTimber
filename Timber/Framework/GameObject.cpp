@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "GameObject.h"
-
 GameObject::GameObject(const std::string& name)
 	: name(name), originPreset(Origins::TL)
 {
@@ -31,4 +30,5 @@ void GameObject::Update(float dt)
 
 void GameObject::Draw(sf::RenderWindow& window)
 {
+
 }

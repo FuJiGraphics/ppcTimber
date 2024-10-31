@@ -28,8 +28,8 @@ protected:
 	BeeHive* beeHive;
 	std::vector<BeeGo*> bees;
 
-	TextGo* centerMsg;
-	UiScore* uiScore;
+	TextGo* centerMsg = nullptr;
+	UiScore* uiScore = nullptr;
 	UiTimebar* uiTimer;
 
 	int score = 0;

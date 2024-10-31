@@ -2,11 +2,12 @@
 #include "Player.h"
 #include "Framework/SceneDev1.h"
 
-Player::Player(const std::string& name) : GameObject(name)
+Player::Player(const std::string& texPath, const std::string& name) : GameObject(name)
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 	isAlive = true;
+	texIdPlayer = texPath.empty() ? texIdPlayer : texPath;
 	animIdle.LoadFromFile(texIdPlayer);
 	animAttack.LoadFromFile(texIdPlayer);
 	animFinishMove.LoadFromFile(texIdPlayer);
@@ -51,6 +52,11 @@ Player::Player(const std::string& name) : GameObject(name)
 }
 
 
+void Player::SetPalyerTexturId(const std::string& id)
+{
+	this->texIdPlayer = id;
+}
+
 void Player::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
@@ -80,6 +86,7 @@ void Player::SetOrigin(const sf::Vector2f& newOrigin)
 
 void Player::Init()
 {
+
 }
 
 void Player::Reset()
@@ -90,6 +97,9 @@ void Player::Reset()
 	animFinishMove.Reset();
 	animTransform.Reset();
 	spriteDie.setTexture(TEXTURE_MGR.Get("graphics/rip.png"));
+
+	SetOrigin(Origins::BC);
+
 	isAlive = true;
 	isChppoing = false;
 	SetPosition(position);
@@ -111,7 +121,7 @@ void Player::Update(float dt)
 	animFinishMove.Update(dt);
 	animTransform.Update(dt);
 
-	if (sceneGame->GetStatus() != SceneDev1::Status::Game)
+	if (sceneGame && sceneGame->GetStatus() != SceneDev1::Status::Game)
 		return;
 
 	if (InputMgr::GetKeyUp(sf::Keyboard::Space))

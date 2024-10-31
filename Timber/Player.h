@@ -29,11 +29,14 @@ protected:
 	SceneDev1* sceneGame = nullptr;
 
 public:
-	Player(const std::string& name = "");
+	Player(const std::string& texPath = "", const std::string& name = "");
 	virtual ~Player() = default;
 
-	Sides GetSide() const { return side; }
-	void OnDie();
+	virtual Sides GetSide() const { return side; }
+	virtual void OnDie();
+
+	void SetPalyerTexturId(const std::string& id);
+	std::string GetPlayerTexturId() { return texIdPlayer; }
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetScale(const sf::Vector2f& scale) override;

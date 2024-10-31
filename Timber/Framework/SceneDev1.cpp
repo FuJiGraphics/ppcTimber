@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneDev1.h"
 #include "SpriteGo.h"
+#include "GameMgr.h"
 #include "CloudGo.h"
 #include "Tree.h"
 #include "Player.h"
@@ -9,6 +10,7 @@
 #include "UiTimebar.h"
 #include "BeeHive.h"
 #include "BeeGo.h"
+#include "PlayerNormal.h"
 
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1)
 {
@@ -33,12 +35,25 @@ void SceneDev1::Init()
 
 	TEXTURE_MGR.Load("graphics/tree.png");
 	TEXTURE_MGR.Load("graphics/branch.png");
+	TEXTURE_MGR.Load("graphics/player.png");
 	TEXTURE_MGR.Load("graphics/player2.png");
 	TEXTURE_MGR.Load("graphics/rip.png");
 	TEXTURE_MGR.Load("graphics/axe.png");
 
 	tree = AddGo(new Tree("Tree"));
-	player = AddGo(new Player("Player"));
+	if (GameMgr::playTexId == "graphics/player.png")
+	{
+		player = AddGo(new PlayerNormal("graphics/player.png"));
+		// 각 초기화 구문 위치 크기 등등
+		// ...
+	}
+	else if (GameMgr::playTexId == "graphics/player2.png")
+	{
+		player = AddGo(new Player("graphics/player2.png"));
+		player->SetSceneGame(this);
+		player->SetPalyerTexturId(GameMgr::playTexId);
+		player->SetPosition({ 1920.f / 2, 1080.f - 200.f });
+	}
 
 	centerMsg = AddGo(new TextGo("fonts/KOMIKAP_.ttf", "Center Message"));
 	centerMsg->sortingLayer = SortingLayers::UI;
@@ -47,11 +62,11 @@ void SceneDev1::Init()
 	uiTimer = AddGo(new UiTimebar("Ui Timer"));
 	beeHive = AddGo(new BeeHive("BeeHive"));
 	beeHive->SetActive(false);
-
+	
 	Scene::Init();
 
 	tree->SetPosition({ 1920.f / 2, 1080.f - 200.f });
-
+	
 	centerMsg->text.setCharacterSize(100);
 	centerMsg->text.setFillColor(sf::Color::White);
 	centerMsg->SetPosition({ 1920.f / 2.f, 1080.f / 2.f });
@@ -72,6 +87,7 @@ void SceneDev1::Enter()
 	TEXTURE_MGR.Load("graphics/tree.png");
 	TEXTURE_MGR.Load("graphics/branch.png");
 	TEXTURE_MGR.Load("graphics/log.png");
+	TEXTURE_MGR.Load("graphics/player.png");
 	TEXTURE_MGR.Load("graphics/player2.png");
 	TEXTURE_MGR.Load("graphics/rip.png");
 	TEXTURE_MGR.Load("graphics/axe.png");
@@ -85,8 +101,6 @@ void SceneDev1::Enter()
 
 	sfxDeath.setBuffer(SOUNDBUFFER_MGR.Get(sbIdDeath));
 	sfxTimeOut.setBuffer(SOUNDBUFFER_MGR.Get(sbIdTimeOut));
-
-	player->SetSceneGame(this);
 
 	Scene::Enter();
 
@@ -107,6 +121,7 @@ void SceneDev1::Exit()
 	TEXTURE_MGR.Unload("graphics/tree.png");
 	TEXTURE_MGR.Unload("graphics/branch.png");
 	TEXTURE_MGR.Unload("graphics/log.png");
+	TEXTURE_MGR.Unload("graphics/player.png");
 	TEXTURE_MGR.Unload("graphics/player2.png");
 	TEXTURE_MGR.Unload("graphics/rip.png");
 	TEXTURE_MGR.Unload("graphics/axe.png");
@@ -122,6 +137,11 @@ void SceneDev1::Exit()
 void SceneDev1::Update(float dt)
 { 
 	Scene::Update(dt);
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::GameMenu);
+	}
 
 	switch (currentStatus)
 	{
@@ -147,17 +167,26 @@ void SceneDev1::Draw(sf::RenderWindow& window)
 
 void SceneDev1::SetCenterMessage(const std::string& msg)
 {
+	if (centerMsg == nullptr)
+		return;
+
 	centerMsg->text.setString(msg);
 	centerMsg->SetOrigin(Origins::MC);
 }
 
 void SceneDev1::SetVisibleCenterMessage(bool visible)
 {
+	if (centerMsg == nullptr)
+		return;
+
 	centerMsg->SetActive(visible);
 }
 
 void SceneDev1::SetScore(int score)
 {
+	if (uiScore == nullptr)
+		return;
+
 	this->score = score;
 	uiScore->SetScore(this->score);
 }
