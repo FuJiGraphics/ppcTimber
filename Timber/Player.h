@@ -3,16 +3,8 @@
 
 class SceneDev1;
 
-enum class PlayerId
-{
-	Player1,
-	Player2,
-};
-
 class Player : public GameObject
 {
-
-
 protected:
 	sf::Sound sfxChop;
 
@@ -35,13 +27,9 @@ protected:
 	bool isFinishMove = false;
 
 	SceneDev1* sceneGame = nullptr;
-	SceneDev2* sceneGame2 = nullptr;
-	PlayerId playerId;
-	Player* player1; // 첫 번째 플레이어
-	Player* player2;
 
 public:
-	Player(const std::string& name = "", PlayerId id = PlayerId::Player1);
+	Player(const std::string& name = "");
 	virtual ~Player() = default;
 
 	Sides GetSide() const { return side; }
@@ -60,7 +48,5 @@ public:
 	void Draw(sf::RenderWindow& window)  override;
 
 	void SetSceneGame(SceneDev1* scene);
-	void SetSceneGame2(SceneDev2* scene);
-
 };
 

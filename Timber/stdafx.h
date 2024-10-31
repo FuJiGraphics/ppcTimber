@@ -16,7 +16,7 @@
 #include <SFML/Config.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
-#include <SFML/Graphics/Rect.hpp>// viewport√ﬂ∞°
+
 // Frameworks
 #include "Framework/Defines.h"
 #include "Framework/Framework.h"

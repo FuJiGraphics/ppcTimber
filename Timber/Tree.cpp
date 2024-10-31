@@ -41,7 +41,6 @@ void Tree::Init()
 		Branch* branch = new Branch(branchTexId);
 		branch->SetOrigin(orginBranch);
 		branch->Init();
-		branch->SetScale({ 0.8f, 0.8f }); //scale 조정
 		branch->SetSide(RandomSide());
 		branches.push_back(branch);
 	}
@@ -71,7 +70,6 @@ void Tree::Reset()
 	for (auto branch : branches)
 	{
 		branch->Reset();
-		branch->SetScale({ 0.8f, 0.8f }); //scale 조정
 	}
 	UpdateBranchPos();
 	auto lastBranch = branches.front();

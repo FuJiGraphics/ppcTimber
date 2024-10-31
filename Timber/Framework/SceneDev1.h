@@ -32,7 +32,6 @@ protected:
 	UiScore* uiScore;
 	UiTimebar* uiTimer;
 
-
 	int score = 0;
 	float timer = 0.f;
 	float beeTimer = 0.f;
