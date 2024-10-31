@@ -4,10 +4,12 @@
 #include "SceneDev2.h"
 #include "TitleScene.h"
 #include "GameMenuScene.h"
+#include "ChtSeletionScene.h"
 void SceneMgr::Init()
 {
 	scenes.push_back(new TitleScene());
 	scenes.push_back(new GameMenuScene());
+	scenes.push_back(new ChtSeletionScene());
 	scenes.push_back(new SceneDev1());	
 	scenes.push_back(new SceneDev2());
 

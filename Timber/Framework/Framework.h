@@ -1,11 +1,14 @@
 #pragma once
 #include "Singleton.h"
 
+
 class Framework : public Singleton<Framework>
 {
 	friend Singleton<Framework>;
 
 protected:
+
+
 	Framework() = default;
 	virtual ~Framework() = default;
 
@@ -23,6 +26,8 @@ protected:
 	float realDeltaTime = 0.f;
 
 public:
+	
+
 	float GetTime() const { return time; }
 	float GetDeltaTime() const { return deltaTime; }
 	float GetRealTime() const { return realTime; }

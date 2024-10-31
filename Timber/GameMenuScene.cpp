@@ -34,6 +34,8 @@ void GameMenuScene::Init()
 	friendmodeText->SetPosition({ 1920 / 2,  600 });
 	friendmodeText->text.setString("2. FRIEND MODE!!");
 
+
+
 	Scene::Init();
 
 
@@ -64,6 +66,6 @@ void GameMenuScene::Update(float dt)
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Dev2);
+		SCENE_MGR.ChangeScene(SceneIds::ChtSeletion);
 	}
 }

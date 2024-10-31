@@ -13,6 +13,7 @@ enum class SceneIds
 	None = -1,
 	Title,
 	GameMenu,
+	ChtSeletion,
 	Dev1,
 	Dev2,
 	Count,
