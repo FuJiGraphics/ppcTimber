@@ -53,15 +53,15 @@ void BeeGo::Update(float dt)
 		dir = (dir == Sides::Left) ? Sides::Right : Sides::Left;
 }
 
-void BeeGo::Draw(sf::RenderWindow& window)
+void BeeGo::Draw(sf::RenderTexture& render)
 {
 	if (dir == Sides::Right)
 	{
-		animIdleR.Draw(window);
+		animIdleR.Draw(render);
 	}
 	else if (dir == Sides::Left)
 	{
-		animIdleL.Draw(window);
+		animIdleL.Draw(render);
 	}
 }
 
@@ -75,7 +75,7 @@ void BeeGo::SetDirection(Sides side)
 	this->dir = side;
 }
 
-void BeeGo::SetSceneStatus(SceneDev1::Status* status)
+void BeeGo::SetSceneStatus(Scene::Status* status)
 {
 	currSceneStatus = status;
 }

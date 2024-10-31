@@ -40,9 +40,9 @@ void UiTimebar::Reset()
 	SetValue(1.0f);
 }
 
-void UiTimebar::Draw(sf::RenderWindow& window)
+void UiTimebar::Draw(sf::RenderTexture& render)
 {
-	window.draw(shape);
+	render.draw(shape);
 }
 
 void UiTimebar::Set(const sf::Vector2f size, const sf::Color& color)

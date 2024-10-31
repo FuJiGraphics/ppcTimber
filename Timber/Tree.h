@@ -19,6 +19,7 @@ protected:
 	ObjectPool<EffectLog> effectLogPool;
 	std::list<EffectLog*> logEffects;
 
+	Scene* scene = nullptr;
 public:
 	Tree(const std::string& name = "");
 	~Tree();
@@ -34,10 +35,11 @@ public:
 	void Reset() override;
 
 	void Update(float dt) override;
-	void Draw(sf::RenderWindow& window) override;
+	void Draw(sf::RenderTexture& render) override;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 
 	void ClearEffectLog();
+	void SetScene(Scene* scene) { this->scene = scene; }
 };
 

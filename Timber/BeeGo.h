@@ -20,11 +20,11 @@ public:
 	void SetScale(const sf::Vector2f& scale) override;
 	void Reset() override;
 	void Update(float dt) override;
-	void Draw(sf::RenderWindow& window) override;
+	void Draw(sf::RenderTexture& render) override;
 
 	void SetSpeed(float speed);
 	void SetDirection(Sides side);
 
-	void SetSceneStatus(SceneDev1::Status* status);
+	void SetSceneStatus(Scene::Status* status);
 };
 

@@ -26,7 +26,7 @@ protected:
 	bool isChppoing = false;
 	bool isFinishMove = false;
 
-	SceneDev1* sceneGame = nullptr;
+	Scene* sceneGame = nullptr;
 
 public:
 	Player(const std::string& name = "");
@@ -45,8 +45,8 @@ public:
 	void Reset()  override;
 
 	void Update(float dt) override;
-	void Draw(sf::RenderWindow& window)  override;
+	void Draw(sf::RenderTexture& render)  override;
 
-	void SetSceneGame(SceneDev1* scene);
+	void SetSceneGame(Scene* scene);
 };
 

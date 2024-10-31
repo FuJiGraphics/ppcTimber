@@ -38,6 +38,7 @@ void SceneDev1::Init()
 	TEXTURE_MGR.Load("graphics/axe.png");
 
 	tree = AddGo(new Tree("Tree"));
+	tree->SetScene(this);
 	player = AddGo(new Player("Player"));
 
 	centerMsg = AddGo(new TextGo("fonts/KOMIKAP_.ttf", "Center Message"));
@@ -140,9 +141,9 @@ void SceneDev1::Update(float dt)
 	}
 }
 
-void SceneDev1::Draw(sf::RenderWindow& window)
+void SceneDev1::Draw(sf::RenderTexture& render)
 {
-	Scene::Draw(window);
+	Scene::Draw(render);
 }
 
 void SceneDev1::SetCenterMessage(const std::string& msg)
