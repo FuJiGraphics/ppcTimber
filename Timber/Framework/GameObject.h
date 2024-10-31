@@ -46,7 +46,7 @@ public:
 	virtual void Reset();
 
 	virtual void Update(float dt);
-	virtual void Draw(sf::RenderWindow& window);
+	virtual void Draw(sf::RenderTexture& render);
 };
 
 struct DrawOrderComparer

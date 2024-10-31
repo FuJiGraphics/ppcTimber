@@ -17,7 +17,7 @@ public:
 	void SetOrigin(Origins preset) override;
 	void SetOrigin(const sf::Vector2f& newOrigin) override;
 	void Reset() override;
-	void Draw(sf::RenderWindow& window) override;
+	void Draw(sf::RenderTexture& render) override;
 
 	void Set(const sf::Vector2f size, const sf::Color& color);
 	float GetValue() const { return currentSize.x / maxSize.x; }

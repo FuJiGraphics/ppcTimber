@@ -1,12 +1,22 @@
 #pragma once
 class Scene
 {
+public:
+	enum class Status
+	{
+		Awake,
+		Game,
+		GameOver,
+		Pause,
+	};
 protected:
 	const SceneIds id;
 	std::list<GameObject*> gameObjects;
 
 	std::list<GameObject*> addGameObjects;
 	std::list<GameObject*> removeGameObjects;
+
+	sf::View camera;
 
 public:
 	Scene(SceneIds id);
@@ -22,8 +32,11 @@ public:
 	virtual void LateUpdate(float dt);
 
 	virtual void OnPreDraw();
-	virtual void Draw(sf::RenderWindow& window);
+	virtual void Draw(sf::RenderTexture& render);
 	virtual void OnPostDraw();
+
+	virtual void OnChop(Sides side) {};	
+	virtual Status GetStatus() const { return Status::Awake; }
 
 	template<typename T>
 	T* AddGo(T* obj)

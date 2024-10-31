@@ -61,7 +61,7 @@ void Scene::OnPreDraw()
 {
 }
 
-void Scene::Draw(sf::RenderWindow& window)
+void Scene::Draw(sf::RenderTexture& render)
 {
 	std::priority_queue<GameObject*, std::vector<GameObject*>, DrawOrderComparer> drawQueue;
 
@@ -75,7 +75,7 @@ void Scene::Draw(sf::RenderWindow& window)
 	while (!drawQueue.empty())
 	{
 		GameObject* obj = drawQueue.top();
-		obj->Draw(window);
+		obj->Draw(render);
 		drawQueue.pop();
 	}
 }

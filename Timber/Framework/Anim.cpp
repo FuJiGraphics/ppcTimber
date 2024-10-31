@@ -206,7 +206,7 @@ namespace fz {
         m_IsEnd = false;
     }
 
-    void Anim::Draw(sf::RenderWindow& window)
+    void Anim::Draw(sf::RenderTexture& render)
     {
         if (!Activated)
             return;
@@ -215,7 +215,7 @@ namespace fz {
         newScale.x = m_Scale[0] * ((m_Flips[0]) ? -1.0f : 1.0f);
         newScale.y = m_Scale[1] * ((m_Flips[1]) ? -1.0f : 1.0f);
         m_Sprite->setScale({ newScale.x, newScale.y });
-        window.draw(*m_Sprite);
+        render.draw(*m_Sprite);
     }
 
     void Anim::ClearSequence()

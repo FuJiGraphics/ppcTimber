@@ -156,14 +156,14 @@ void Player::Update(float dt)
 
 }
 
-void Player::Draw(sf::RenderWindow& window)
+void Player::Draw(sf::RenderTexture& render)
 {
 	if (side == Sides::Right)
 	{
 		if (!isAlive)
 		{
 			spriteDie.setPosition({ 1920.0f * 0.5f + 200.0f, 700.0f });
-			window.draw(spriteDie);
+			render.draw(spriteDie);
 			return;
 		}
 		else if (isFinishMove)
@@ -177,20 +177,20 @@ void Player::Draw(sf::RenderWindow& window)
 			{
 				animFinishMove.SetPosition({ 1920.0f * 0.5f + 480.0f, 560.0f });
 				animFinishMove.SetFlipX(true);
-				animFinishMove.Draw(window);
+				animFinishMove.Draw(render);
 			}
 		}
 		else if (animAttack.IsFrameEnd())
 		{
 			animIdle.SetPosition({ 1920.0f * 0.5f + 480.0f, 560.0f });
 			animIdle.SetFlipX(true);
-			animIdle.Draw(window);
+			animIdle.Draw(render);
 		}
 		else
 		{
 			animAttack.SetPosition({ 1920.0f * 0.5f + 480.0f, 560.0f });
 			animAttack.SetFlipX(true);
-			animAttack.Draw(window);
+			animAttack.Draw(render);
 		}
 	}
 	else if (side == Sides::Left)
@@ -198,7 +198,7 @@ void Player::Draw(sf::RenderWindow& window)
 		if (!isAlive)
 		{
 			spriteDie.setPosition({ 1920.0f * 0.5f - 350.0f, 700.0f });
-			window.draw(spriteDie);
+			render.draw(spriteDie);
 			return;
 		}
 		else if (isFinishMove)
@@ -212,25 +212,25 @@ void Player::Draw(sf::RenderWindow& window)
 			{
 				animFinishMove.SetPosition({ 1920.0f * 0.5f - 480.0f, 560.0f });
 				animFinishMove.SetFlipX(false);
-				animFinishMove.Draw(window);
+				animFinishMove.Draw(render);
 			}
 		}
 		else if (animAttack.IsFrameEnd())
 		{
 			animIdle.SetPosition({ 1920.0f * 0.5f - 480.0f, 560.0f });
 			animIdle.SetFlipX(false);
-			animIdle.Draw(window);
+			animIdle.Draw(render);
 		}
 		else
 		{
 			animAttack.SetPosition({ 1920.0f * 0.5f - 480.0f, 560.0f });
 			animAttack.SetFlipX(false);
-			animAttack.Draw(window);
+			animAttack.Draw(render);
 		}
 	}
 }
 
-void Player::SetSceneGame(SceneDev1* scene)
+void Player::SetSceneGame(Scene* scene)
 {
 	sceneGame = scene;
 }

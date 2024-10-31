@@ -67,10 +67,10 @@ void BeeHive::Reset()
 	velocity = { 0.0f, 0.0f };
 }
 
-void BeeHive::Draw(sf::RenderWindow& window)
+void BeeHive::Draw(sf::RenderTexture& render)
 {
 	if (isAlive)
-		window.draw(spriteIdle);
+		render.draw(spriteIdle);
 	else
-		window.draw(spriteDead);
+		render.draw(spriteDead);
 }

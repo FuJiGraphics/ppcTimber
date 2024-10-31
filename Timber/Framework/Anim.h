@@ -47,7 +47,7 @@ namespace fz {
 
         void Update(float dt);
         void Reset();
-        void Draw(sf::RenderWindow& window);
+        void Draw(sf::RenderTexture& render);
         void ClearSequence();
 
     private:

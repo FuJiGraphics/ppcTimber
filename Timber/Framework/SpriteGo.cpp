@@ -40,8 +40,8 @@ void SpriteGo::SetScale(const sf::Vector2f& scale)
 	sprite.setScale(scale);
 }
 
-void SpriteGo::Draw(sf::RenderWindow& window)
+void SpriteGo::Draw(sf::RenderTexture& render)
 {
-	GameObject::Draw(window);
-	window.draw(sprite);
+	GameObject::Draw(render);
+	render.draw(sprite);
 }

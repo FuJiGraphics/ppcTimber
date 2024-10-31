@@ -11,17 +11,8 @@ class BeeGo;
 
 class SceneDev1 : public Scene
 {
-public:
-	enum class Status
-	{
-		Awake,
-		Game,
-		GameOver,
-		Pause,
-	};
-
 protected:
-	Status currentStatus = Status::Awake;
+	Scene::Status currentStatus = Status::Awake;
 
 	Tree* tree;
 	Player* player;
@@ -54,7 +45,9 @@ public:
 
 	void Update(float dt) override;
 
-	void Draw(sf::RenderWindow& window) override;
+	void Draw(sf::RenderTexture& render) override;
+	void OnChop(Sides side) override;
+	Status GetStatus() const override { return currentStatus; }
 
 	void SetCenterMessage(const std::string& msg);
 	void SetVisibleCenterMessage(bool visible);
@@ -67,8 +60,5 @@ public:
 	void UpdateGameOver(float dt);
 	void UpdatePause(float dt);
 
-	void OnChop(Sides side);
-
-	Status GetStatus() const { return currentStatus; }
 };
 

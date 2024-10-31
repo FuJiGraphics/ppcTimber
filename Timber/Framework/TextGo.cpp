@@ -37,8 +37,8 @@ void TextGo::SetScale(const sf::Vector2f& scale)
 	text.setScale(scale);
 }
 
-void TextGo::Draw(sf::RenderWindow& window)
+void TextGo::Draw(sf::RenderTexture& render)
 {
-	GameObject::Draw(window);
-	window.draw(text);
+	GameObject::Draw(render);
+	render.draw(text);
 }
