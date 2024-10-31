@@ -49,7 +49,7 @@ void BeeGo::Update(float dt)
 	animIdleR.SetPosition(position);
 	animIdleL.SetPosition(position);
 
-	if (position.x < -100.0f || position.x > 1920.f + 100.f)
+	if (position.x < -100.0f || position.x > 1920.f - 180.f)
 		dir = (dir == Sides::Left) ? Sides::Right : Sides::Left;
 }
 

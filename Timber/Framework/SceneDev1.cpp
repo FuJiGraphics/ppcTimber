@@ -252,6 +252,8 @@ void SceneDev1::UpdateGame(float dt)
 				newBee->SetPosition({ hivePos.x - 50.f, hivePos.y - 100.f });
 				newBee->SetScale({ 4.0f, 4.0f });
 				newBee->SetSpeed(Utils::RandomRange(100.f, 400.f));
+				Sides newDir = (Utils::RandomRange(0, 1) == 1) ? Sides::Left : Sides::Right;
+				newBee->SetDirection(newDir);
 				newBee->Reset();
 				newBee->SetSceneStatus(&currentStatus);
 				beeTimer = beeGenTime;
