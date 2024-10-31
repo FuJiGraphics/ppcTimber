@@ -7,7 +7,6 @@ class TextGo;
 class TitleScene : public Scene
 {
 protected:
-	TextGo* titleText;
 	TextGo* titleMsgText;
 public:
 	TitleScene();

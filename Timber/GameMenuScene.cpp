@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameMenuScene.h"
+#include <CloudGo.h>
 
 GameMenuScene::GameMenuScene() : Scene(SceneIds::GameMenu)
 {
@@ -12,6 +13,13 @@ void GameMenuScene::Init()
 	obj->sortingOrder = -1;
 	obj->SetOrigin(Origins::MC);
 	obj->SetPosition({ 1920 / 2, 1080 / 2 });
+
+	for (int i = 0; i < 3; ++i)
+	{
+		CloudGo* cloud = AddGo(new CloudGo("graphics/cloud.png"));
+		cloud->sortingLayer = SortingLayers::Background;
+		cloud->sortingOrder = 0;
+	}
 
 	titleText = AddGo(new TextGo("fonts/KOMIKAP_.ttf", "Title"));
 	titleText->text.setCharacterSize(200);
@@ -45,6 +53,7 @@ void GameMenuScene::Enter()
 {
 	
 	TEXTURE_MGR.Load("graphics/background.png");
+	TEXTURE_MGR.Load("graphics/cloud.png");
 	FONT_MGR.Load("fonts/KOMIKAP_.ttf");
 	Scene::Enter();
 }
@@ -53,6 +62,7 @@ void GameMenuScene::Exit()
 {
 	Scene::Exit();
 	TEXTURE_MGR.Unload("graphics/background.png");
+	TEXTURE_MGR.Unload("graphics/cloud.png");
 	FONT_MGR.Unload("fonts/KOMIKAP_.ttf");
 }
 
