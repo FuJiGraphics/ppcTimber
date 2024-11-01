@@ -44,8 +44,8 @@ void SceneDev1::Init()
 	if (GameMgr::playTexId == "graphics/player.png")
 	{
 		player = AddGo(new PlayerNormal("graphics/player.png"));
-		// 각 초기화 구문 위치 크기 등등
-		// ...
+		player->SetPosition({ 1920.f / 2, 1080.f - 400.f });
+		player->SetSceneGame(this);
 	}
 	else if (GameMgr::playTexId == "graphics/player2.png")
 	{
@@ -78,6 +78,7 @@ void SceneDev1::Init()
 	uiTimer->Set({ 500.f, 100.f }, sf::Color::Red);
 	uiTimer->SetOrigin(Origins::ML);
 	uiTimer->SetPosition({ 1920.f / 2.f - 250.f, 1080.f - 100.f });
+	player->SetSceneGame(this);
 }
 
 void SceneDev1::Enter()
@@ -137,11 +138,6 @@ void SceneDev1::Exit()
 void SceneDev1::Update(float dt)
 { 
 	Scene::Update(dt);
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		SCENE_MGR.ChangeScene(SceneIds::GameMenu);
-	}
 
 	switch (currentStatus)
 	{

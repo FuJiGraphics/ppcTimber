@@ -42,16 +42,11 @@ void GameMenuScene::Init()
 	friendmodeText->SetPosition({ 1920 / 2,  600 });
 	friendmodeText->text.setString("2. FRIEND MODE!!");
 
-
-
 	Scene::Init();
-
-
 }
 
 void GameMenuScene::Enter()
 {
-	
 	TEXTURE_MGR.Load("graphics/background.png");
 	TEXTURE_MGR.Load("graphics/cloud.png");
 	FONT_MGR.Load("fonts/KOMIKAP_.ttf");
@@ -76,6 +71,6 @@ void GameMenuScene::Update(float dt)
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
 	{
-		SCENE_MGR.ChangeScene(SceneIds::ChtSeletion);
+		SCENE_MGR.ChangeScene(SceneIds::Dev2);
 	}
 }

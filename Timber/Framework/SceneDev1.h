@@ -23,7 +23,7 @@ public:
 protected:
 	Status currentStatus = Status::Awake;
 
-	Tree* tree;
+	Tree* tree = nullptr;
 	Player* player;
 	BeeHive* beeHive;
 	std::vector<BeeGo*> bees;

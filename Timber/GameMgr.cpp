@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "Player2.h"
+#include "PlayerNormal.h"
 #include "GameMgr.h"
 
 
